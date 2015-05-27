@@ -8,6 +8,8 @@ void guiBilateralUpsample(InputArray srcimage, OutputArray dest, int resizeFacto
 	namedWindow(windowName);
 	Mat src = srcimage.getMat();
 
+	int alpha = 0; createTrackbar("a",windowName, &alpha, 100);
+
 	int r = 3; createTrackbar("r",windowName, &r, 30);
 	int sc = 30; createTrackbar("sigma_color",windowName, &sc, 255);
 	int ss = 30; createTrackbar("sigma_space",windowName, &ss, 255);
@@ -25,9 +27,59 @@ void guiBilateralUpsample(InputArray srcimage, OutputArray dest, int resizeFacto
 			tmp.copyTo(srctemp);
 		}
 
+		alphaBlend(srcimage, srctemp, alpha/100.0, srctemp);
+		
+
 		resize(srctemp, dest, Size(src.cols*resizeFactor, src.rows*resizeFactor), 0,0, INTER_CUBIC);
+
 		imshow(windowName, dest);
 		key = waitKey(30);
+		if(key=='f')
+		{
+			alpha = (alpha != 0) ? 100:0;
+			setTrackbarPos("a", windowName, alpha);
+		}
+	}
+	destroyWindow(windowName);
+}
+
+void guiWeightedModeUpsample(InputArray srcimage, OutputArray dest, int resizeFactor)
+{
+	string windowName = "weighted mode";
+	namedWindow(windowName);
+	Mat src = srcimage.getMat();
+
+	int alpha = 0; createTrackbar("a",windowName, &alpha, 100);
+
+	int r = 3; createTrackbar("r",windowName, &r, 30);
+	int sc = 30; createTrackbar("sigma_color",windowName, &sc, 255);
+	int ss = 30; createTrackbar("sigma_space",windowName, &ss, 255);
+	int sb = 5; createTrackbar("sigma_bin",windowName, &sb, 255);
+	int iter = 1; createTrackbar("iteration",windowName, &iter, 10);
+
+	int key = 0;
+	while(key!='q')
+	{
+		Mat srctemp;
+		src.copyTo(srctemp);
+		for(int i=0;i<iter;i++)
+		{
+			Mat tmp = srctemp.clone();
+			weightedModeFilter(srctemp, srctemp, tmp, r, ss, sc, 2, sb);
+			tmp.copyTo(srctemp);
+		}
+
+		alphaBlend(srcimage, srctemp, alpha/100.0, srctemp);
+		resize(srctemp, dest, Size(src.cols*resizeFactor, src.rows*resizeFactor), 0,0, INTER_CUBIC);
+
+		
+		imshow(windowName, dest);
+		key = waitKey(30);
+		if(key=='f')
+		{
+			alpha = (alpha != 0) ? 0:100;
+			setTrackbarPos("a", windowName, alpha);
+		}
 	}
 	destroyWindow(windowName);
 }
@@ -38,15 +90,17 @@ int main(int argc, char** argv)
 	Mat refNN = imread("images/miku_small_waifu2x.png");
 	Mat cubic;
 	Mat bilateral;
+	Mat weightedmode;
 	
 	resize(src, cubic, Size(src.cols*2, src.rows*2), 0,0, INTER_CUBIC);
 
-	guiBilateralUpsample(src, bilateral, 2);
+	//guiBilateralUpsample(src, bilateral, 2);
+	guiWeightedModeUpsample(src, weightedmode, 2);
 
+	//guiAlphaBlend(cubic, refNN);
+	//guiAlphaBlend(bilateral, refNN);
+	guiAlphaBlend(weightedmode, refNN);
 	
 	
-	guiAlphaBlend(cubic, refNN);
-	guiAlphaBlend(bilateral, refNN);
-
 	return 0;
 }

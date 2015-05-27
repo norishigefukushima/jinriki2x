@@ -65,13 +65,15 @@ double RMSE(InputArray src1, InputArray src2, InputArray mask)
 	return sqrt(v.val[0]/(double)count);
 }
 
-void alphaBlend(const Mat& src1, const Mat& src2, double alpha, Mat& dest)
+void alphaBlend(InputArray src1_, InputArray src2_, double alpha, OutputArray dest)
 {
+	Mat src1 = src1_.getMat();
+	Mat src2 = src2_.getMat();
 	int T;
 	Mat s1,s2;
 	if(src1.channels()<=src2.channels())T=src2.type();
 	else T=src1.type();
-	if(dest.empty())dest=Mat::zeros(src1.size(),T);
+	
 	if(src1.channels()==src2.channels())
 	{
 		s1=src1;
@@ -97,7 +99,7 @@ void alphaBlend(const Mat& src1, const Mat& src2, double alpha, Mat& dest)
 		cvtColor(src2,s2,CV_GRAY2BGRA);
 		s1=src1;
 	}
-	cv::addWeighted(s1,alpha,s2,1.0-alpha,0.0,dest);
+	cv::addWeighted(s1, alpha, s2, 1.0-alpha, 0.0, dest);
 }
 
 void alphaBlend(const Mat& src1, const Mat& src2, const Mat& alpha, Mat& dest)

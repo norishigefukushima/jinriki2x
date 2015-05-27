@@ -15,6 +15,9 @@ using namespace cv;
 #pragma comment(lib, "opencv_contrib"CV_VERSION_NUMBER".lib")
 #endif
 
+void weightedMedianFilter(Mat& src, Mat& guide, Mat& dst, int r, int truncate, double sig_s, double sig_c, int metric, int sig_bin);
+void weightedModeFilter(Mat& src, Mat& guide, Mat& dst, int r, double sig_s, double sig_c, int metric, int sig_bin);
+
 enum
 {
 	TIME_AUTO=0,
@@ -59,5 +62,5 @@ public:
 
 void showMatInfo(InputArray src_, string name="");
 void guiAlphaBlend(InputArray src1_, InputArray src2_);
-void alphaBlend(const Mat& src1, const Mat& src2, double alpha, Mat& dest);
+void alphaBlend(InputArray src1_, InputArray src2_, double alpha, OutputArray dest);
 void warpShift(InputArray src_, OutputArray dest_, int shiftx, int shifty, int borderType);

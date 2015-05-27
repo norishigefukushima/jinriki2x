@@ -134,6 +134,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -145,6 +146,7 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="util.cpp" />
+    <ClCompile Include="WeightedModeFilter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="util.h" />
