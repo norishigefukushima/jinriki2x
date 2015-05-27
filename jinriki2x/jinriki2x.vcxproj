@@ -144,11 +144,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="hq2x.cpp" />
+    <ClCompile Include="hq3x.cpp" />
+    <ClCompile Include="hq4x.cpp" />
+    <ClCompile Include="hqx.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Source.cpp" />
     <ClCompile Include="util.cpp" />
     <ClCompile Include="WeightedModeFilter.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="hqx.h" />
     <ClInclude Include="util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

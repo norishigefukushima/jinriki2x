@@ -18,6 +18,8 @@ using namespace cv;
 void weightedMedianFilter(Mat& src, Mat& guide, Mat& dst, int r, int truncate, double sig_s, double sig_c, int metric, int sig_bin);
 void weightedModeFilter(Mat& src, Mat& guide, Mat& dst, int r, double sig_s, double sig_c, int metric, int sig_bin);
 
+void hqx(InputArray src, OutputArray dest, const int scaleBy);//scaleBy:2-4
+
 enum
 {
 	TIME_AUTO=0,

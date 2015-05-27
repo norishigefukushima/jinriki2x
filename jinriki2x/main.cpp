@@ -50,6 +50,7 @@ void guiWeightedModeUpsample(InputArray srcimage, OutputArray dest, int resizeFa
 	Mat src = srcimage.getMat();
 
 	int alpha = 0; createTrackbar("a",windowName, &alpha, 100);
+	int sw = 0; createTrackbar("sw",windowName, &sw, 1);
 
 	int r = 3; createTrackbar("r",windowName, &r, 30);
 	int sc = 30; createTrackbar("sigma_color",windowName, &sc, 255);
@@ -58,20 +59,28 @@ void guiWeightedModeUpsample(InputArray srcimage, OutputArray dest, int resizeFa
 	int iter = 1; createTrackbar("iteration",windowName, &iter, 10);
 
 	int key = 0;
+	
 	while(key!='q')
 	{
 		Mat srctemp;
-		src.copyTo(srctemp);
-		for(int i=0;i<iter;i++)
 		{
-			Mat tmp = srctemp.clone();
-			weightedModeFilter(srctemp, srctemp, tmp, r, ss, sc, 2, sb);
-			tmp.copyTo(srctemp);
+			Mat med;
+			medianBlur(srcimage, med,1);
+			
+			src.copyTo(srctemp);
+			CalcTime t;
+			for(int i=0;i<iter;i++)
+			{
+				Mat tmp = srctemp.clone();
+				weightedModeFilter(srctemp, med, tmp, r, ss, sc, 2, sb);
+				tmp.copyTo(srctemp);
+			}
+
+			alphaBlend(srcimage, srctemp, alpha/100.0, srctemp);
+
+			if(sw==0) hqx(srctemp, dest, resizeFactor);
+			else resize(srctemp, dest, Size(src.cols*resizeFactor, src.rows*resizeFactor), 0,0, INTER_CUBIC);
 		}
-
-		alphaBlend(srcimage, srctemp, alpha/100.0, srctemp);
-		resize(srctemp, dest, Size(src.cols*resizeFactor, src.rows*resizeFactor), 0,0, INTER_CUBIC);
-
 		
 		imshow(windowName, dest);
 		key = waitKey(30);
