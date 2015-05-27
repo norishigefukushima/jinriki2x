@@ -80,6 +80,9 @@ void guiWeightedModeUpsample(InputArray srcimage, OutputArray dest, int resizeFa
 
 			if(sw==0) hqx(srctemp, dest, resizeFactor);
 			else resize(srctemp, dest, Size(src.cols*resizeFactor, src.rows*resizeFactor), 0,0, INTER_CUBIC);
+
+			//Mat dest2 = dest.getMat().clone();
+			//guiCoherenceEnhancingShockFilter(dest2,dest);
 		}
 		
 		imshow(windowName, dest);

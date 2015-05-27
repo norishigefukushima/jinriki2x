@@ -20,6 +20,8 @@ void weightedModeFilter(Mat& src, Mat& guide, Mat& dst, int r, double sig_s, dou
 
 void hqx(InputArray src, OutputArray dest, const int scaleBy);//scaleBy:2-4
 
+void coherenceEnhancingShockFilter(InputArray src, OutputArray dest,int sigma, int str_sigma, double blend, int iter);
+void guiCoherenceEnhancingShockFilter(InputArray src, OutputArray dest);
 enum
 {
 	TIME_AUTO=0,
