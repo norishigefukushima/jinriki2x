@@ -43,7 +43,7 @@ void guiBilateralUpsample(InputArray srcimage, OutputArray dest, int resizeFacto
 	destroyWindow(windowName);
 }
 
-void guiWeightedModeUpsample(InputArray srcimage, OutputArray dest, int resizeFactor)
+void guiWeightedModeUpsample(InputArray srcimage, OutputArray dest, int resizeFactor, InputArray ref)
 {
 	string windowName = "weighted mode";
 	namedWindow(windowName);
@@ -77,23 +77,20 @@ void guiWeightedModeUpsample(InputArray srcimage, OutputArray dest, int resizeFa
 				tmp.copyTo(srctemp);
 			}
 
-			alphaBlend(srcimage, srctemp, alpha/100.0, srctemp);
-
+			//upsampling function
 			if(sw==0) hqx(srctemp, dest, resizeFactor);
-			else resize(srctemp, dest, Size(src.cols*resizeFactor, src.rows*resizeFactor), 0,0, INTER_CUBIC);
-
+			else resize(srctemp, dest, Size(src.cols*resizeFactor, src.rows*resizeFactor), 0,0, INTER_LANCZOS4);
 			
-			
-			//Mat dest2 = dest.getMat().clone();
-			//guiCoherenceEnhancingShockFilter(dest2,dest);
 		}
+		//shock filter
 		if(sw2!=0)
 		{
 			Mat a = dest.getMat();
 			blurRemoveMinMax(a,a,2);
 			a.copyTo(dest);
 		}
-		
+		//blending referece image for debug
+		alphaBlend(ref, dest, alpha/100.0, dest);
 		imshow(windowName, dest);
 		key = waitKey(30);
 		if(key=='f')
@@ -107,8 +104,8 @@ void guiWeightedModeUpsample(InputArray srcimage, OutputArray dest, int resizeFa
 
 int main(int argc, char** argv)
 {
-	Mat src = imread("images/miku_small_noisy.jpg");
-	Mat refNN = imread("images/miku_small_waifu2x.png");
+	Mat src = imread("images/miku_small_noisy.jpg",0);
+	Mat refNN = imread("images/miku_small_noisy_waifu2x.png",0);
 	Mat cubic;
 	Mat bilateral;
 	Mat weightedmode;
@@ -116,7 +113,7 @@ int main(int argc, char** argv)
 	resize(src, cubic, Size(src.cols*2, src.rows*2), 0,0, INTER_CUBIC);
 
 	//guiBilateralUpsample(src, bilateral, 2);
-	guiWeightedModeUpsample(src, weightedmode, 2);
+	guiWeightedModeUpsample(src, weightedmode, 2, refNN);
 
 	//guiAlphaBlend(cubic, refNN);
 	//guiAlphaBlend(bilateral, refNN);
