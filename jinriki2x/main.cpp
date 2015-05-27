@@ -51,12 +51,13 @@ void guiWeightedModeUpsample(InputArray srcimage, OutputArray dest, int resizeFa
 
 	int alpha = 0; createTrackbar("a",windowName, &alpha, 100);
 	int sw = 0; createTrackbar("sw",windowName, &sw, 1);
+	int sw2 = 0; createTrackbar("sw2",windowName, &sw2, 1);
 
 	int r = 3; createTrackbar("r",windowName, &r, 30);
-	int sc = 30; createTrackbar("sigma_color",windowName, &sc, 255);
+	int sc = 40; createTrackbar("sigma_color",windowName, &sc, 255);
 	int ss = 30; createTrackbar("sigma_space",windowName, &ss, 255);
-	int sb = 5; createTrackbar("sigma_bin",windowName, &sb, 255);
-	int iter = 1; createTrackbar("iteration",windowName, &iter, 10);
+	int sb = 10; createTrackbar("sigma_bin",windowName, &sb, 255);
+	int iter = 2; createTrackbar("iteration",windowName, &iter, 10);
 
 	int key = 0;
 	
@@ -81,8 +82,16 @@ void guiWeightedModeUpsample(InputArray srcimage, OutputArray dest, int resizeFa
 			if(sw==0) hqx(srctemp, dest, resizeFactor);
 			else resize(srctemp, dest, Size(src.cols*resizeFactor, src.rows*resizeFactor), 0,0, INTER_CUBIC);
 
+			
+			
 			//Mat dest2 = dest.getMat().clone();
 			//guiCoherenceEnhancingShockFilter(dest2,dest);
+		}
+		if(sw2!=0)
+		{
+			Mat a = dest.getMat();
+			blurRemoveMinMax(a,a,2);
+			a.copyTo(dest);
 		}
 		
 		imshow(windowName, dest);

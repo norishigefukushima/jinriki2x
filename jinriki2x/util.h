@@ -22,6 +22,16 @@ void hqx(InputArray src, OutputArray dest, const int scaleBy);//scaleBy:2-4
 
 void coherenceEnhancingShockFilter(InputArray src, OutputArray dest,int sigma, int str_sigma, double blend, int iter);
 void guiCoherenceEnhancingShockFilter(InputArray src, OutputArray dest);
+
+void blurRemoveMinMax(const Mat& src, Mat& dest, const int r);
+//MORPH_RECT=0, MORPH_CROSS=1, MORPH_ELLIPSE
+void maxFilter(const Mat& src, Mat& dest, Size kernelSize, int shape=MORPH_RECT);
+void maxFilter(const Mat& src, Mat& dest, int radius);
+//MORPH_RECT=0, MORPH_CROSS=1, MORPH_ELLIPSE
+void minFilter(const Mat& src, Mat& dest, Size kernelSize, int shape = MORPH_RECT);
+void minFilter(const Mat& src, Mat& dest, int radius);
+
+
 enum
 {
 	TIME_AUTO=0,
