@@ -384,8 +384,8 @@ static void alphablend2(Mat& src1, Mat& src2,Mat& alpha, Mat& dest)
 
 void guiAlphaBlend(InputArray src1_, InputArray src2_)
 {
-	const Mat& src1 = src1_.getMat();
-	const Mat& src2=src2_.getMat();
+	Mat& src1 = src1_.getMat();
+	Mat& src2 = src2_.getMat();
 	Mat s1,s2;
 
 	if(src1.depth()==CV_8U || src1.depth()==CV_32F)

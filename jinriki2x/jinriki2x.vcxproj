@@ -148,8 +148,11 @@
     <ClCompile Include="hq3x.cpp" />
     <ClCompile Include="hq4x.cpp" />
     <ClCompile Include="hqx.cpp" />
+    <ClCompile Include="ibp.cpp" />
+    <ClCompile Include="jointBilateralUpsample.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="minmax.cpp" />
+    <ClCompile Include="nedi.cpp" />
     <ClCompile Include="shockFilter.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="util.cpp" />

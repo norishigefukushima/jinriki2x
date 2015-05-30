@@ -4,11 +4,13 @@ using namespace cv;
 #define CV_VERSION_NUMBER CVAUX_STR(CV_MAJOR_VERSION) CVAUX_STR(CV_MINOR_VERSION) CVAUX_STR(CV_SUBMINOR_VERSION)
 
 #ifdef _DEBUG
+#pragma comment(lib, "opencv_photo"CV_VERSION_NUMBER"d.lib")
 #pragma comment(lib, "opencv_imgproc"CV_VERSION_NUMBER"d.lib")
 #pragma comment(lib, "opencv_highgui"CV_VERSION_NUMBER"d.lib")
 #pragma comment(lib, "opencv_core"CV_VERSION_NUMBER"d.lib")
 #pragma comment(lib, "opencv_contrib"CV_VERSION_NUMBER"d.lib")
 #else
+#pragma comment(lib, "opencv_photo"CV_VERSION_NUMBER".lib")
 #pragma comment(lib, "opencv_imgproc"CV_VERSION_NUMBER".lib")
 #pragma comment(lib, "opencv_highgui"CV_VERSION_NUMBER".lib")
 #pragma comment(lib, "opencv_core"CV_VERSION_NUMBER".lib")
@@ -31,6 +33,8 @@ void maxFilter(const Mat& src, Mat& dest, int radius);
 void minFilter(const Mat& src, Mat& dest, Size kernelSize, int shape = MORPH_RECT);
 void minFilter(const Mat& src, Mat& dest, int radius);
 
+void jointBilateralUpsample(InputArray src, InputArray joint, OutputArray dest, const double sigma_c, const double sigma_s);
+void iterativeBackProjectionDeblurGaussian(InputArray src, OutputArray dest, const Size ksize, const double sigma, const double lambda, const int iteration);
 
 enum
 {
